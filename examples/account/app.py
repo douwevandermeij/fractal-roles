@@ -1,5 +1,4 @@
 from dataclasses import dataclass
-from pprint import pprint
 
 from account.roles import RolesService, TokenPayloadRoles
 
@@ -23,6 +22,6 @@ if __name__ == "__main__":
         Task(3, 2, "C"),
     ]
 
-    pprint(
+    print(
         list(map(lambda i: i.name, filter(payload.specification.is_satisfied_by, data)))
     )
