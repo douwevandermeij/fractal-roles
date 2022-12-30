@@ -13,9 +13,9 @@
 [pypi-url]: https://pypi.org/project/fractal-roles/
 [build-image]: https://github.com/douwevandermeij/fractal-roles/actions/workflows/build.yml/badge.svg
 [build-url]: https://github.com/douwevandermeij/fractal-roles/actions/workflows/build.yml
-[coverage-image]: https://codecov.io/gh/douwevandermeij/fractal-roles/branch/main/graph/badge.svg?token=BOC1ZUJISV
+[coverage-image]: https://codecov.io/gh/douwevandermeij/fractal-roles/branch/main/graph/badge.svg?token=Jv2ShlaVf8
 [coverage-url]: https://codecov.io/gh/douwevandermeij/fractal-roles
-[quality-image]: https://api.codeclimate.com/v1/badges/455ddff201b43f9b1025/maintainability
+[quality-image]: https://api.codeclimate.com/v1/badges/754713b64573aa47571d/maintainability
 [quality-url]: https://codeclimate.com/github/douwevandermeij/fractal-roles
 
 ## Installation
