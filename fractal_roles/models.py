@@ -17,6 +17,7 @@ class Method:
     specification_func: Callable = lambda payload: EmptySpecification()
 
 
+@dataclass
 class Methods:
     get: Optional[Method]
     post: Optional[Method]

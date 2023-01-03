@@ -198,3 +198,75 @@ class RolesService(BaseRolesService):
     def __init__(self):
         self.roles = [Admin(), User()]  # Admin Role will first be checked against the payload
 ```
+
+### Alternative approach
+
+The examples above work with predefined methods such as **get**, **post**, **put** and **delete** (where only **get** is allowed and the rest raising exceptions).
+These methods are very useful when building a REST API, but when you're not building a REST API, the Fractal Roles can still be of help.
+
+When building a regular Python application, you might still want to limit the execution of certain function by some users.
+These boundaries can be described in a [UML Use Case diagram](https://en.wikipedia.org/wiki/Use_case_diagram), which can also be of help for building REST APIs.
+
+In a Use Case diagram, an **Actor** (Role) can perform/execute an **Action**.
+Let's say we have a use case where a **Student** can **order a pizza**.
+Later on in the process the **Student** needs to **pay for the pizza** and the cost will be deducted from his **Wallet**.
+
+The **Wallet** is a passive actor, so doesn't need a role, but the **Student** can perform two actions:
+- Order a pizza
+- Pay for the pizza
+
+Be aware that the cost needs to be deducted from **his** wallet, not from someone else's.
+
+We'll define the following Role and RolesService:
+
+```python
+@dataclass
+class Action:
+    execute: Optional[Method] = None
+
+
+class Student(Role):
+    def __getattr__(self, item):
+        return Action()
+
+    order_pizza = Action(execute=Method(my_data))  # reuse of my_data as shown in above examples
+    pay_for_pizza = Action(execute=Method(my_data))  # reuse of my_data
+
+
+class RolesService(BaseRolesService):
+    def __init__(self):
+        self.roles = [Student()]
+
+    def verify(
+        self, payload: TokenPayloadRolesMixin, endpoint: str, method: str = "execute"
+    ) -> TokenPayloadRolesMixin:
+        return super().verify(payload, endpoint, method)
+```
+
+Notice we replaced the standard `Methods` class with `Action` which only contains one method named `execute`.
+
+From the application we can now call the RolesService as follows:
+
+```python
+roles_service = RolesService()
+
+data = [
+    Wallet(1, "67890", "12345", 100),
+    Wallet(2, "67890", "11111", 1000),
+    Wallet(3, "00000", "12345", 10000),
+]
+
+payload = TokenPayloadRoles(roles=["student"], account="67890", sub="12345")
+
+payload = roles_service.verify(payload, "order_pizza")
+
+# order pizza in the application
+
+payload = roles_service.verify(payload, "pay_for_pizza")
+
+# deduct cost from the correct wallet, using the Specification in the payload
+```
+
+By not getting an exception, you know you can make the real calls to the backend application.
+The RolesService will, just like in the other examples, return a Specification in the payload to be used in further processing.
+Like using the correct wallet for making a deduction.
