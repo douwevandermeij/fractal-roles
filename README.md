@@ -30,6 +30,7 @@ Setup the development environment by running:
 
 ```sh
 make deps
+pre-commit install
 ```
 
 Happy coding.
@@ -138,6 +139,9 @@ return Data.objects.filter(q)
 ```
 
 We will now dive deeper into permissions, but the way to verify a user's payload stays the same.
+
+**Fractal Roles** plays very well together with **Fractal Tokens**. The TokenService can convert a token into a ready to use `payload`.
+For more information on how to use tokens, please check out the [Fractal Tokens](https://github.com/douwevandermeij/fractal-tokens) package.
 
 ### Fine-grained permissions
 

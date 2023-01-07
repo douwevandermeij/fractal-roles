@@ -1,22 +1,10 @@
-from abc import ABC
 from typing import List
 
 from fractal_roles.exceptions import NotAllowedException
 from fractal_roles.models import Methods, Role, TokenPayloadRolesMixin
 
 
-class Service(
-    ABC
-):  # TODO copied from fractal-toolkit until services are extracted to separate package
-    @classmethod
-    def install(cls, *args, **kwargs):
-        yield cls()
-
-    def is_healthy(self) -> bool:
-        return True
-
-
-class BaseRolesService(Service):
+class BaseRolesService:
     roles: List[Role] = []
 
     def verify(
