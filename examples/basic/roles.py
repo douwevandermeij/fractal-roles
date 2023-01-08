@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 
 from fractal_roles.models import Role, TokenPayloadRolesMixin
-from fractal_roles.services import BaseRolesService
+from fractal_roles.services import RolesService as BaseRolesService
 
 
 @dataclass

@@ -1,10 +1,11 @@
 from dataclasses import dataclass
+from typing import Optional
 
-from fractal_specifications.generic.operators import EqualsSpecification
-from fractal_specifications.generic.specification import Specification
+from fractal_specifications.generic.operators import EqualsSpecification  # type: ignore
+from fractal_specifications.generic.specification import Specification  # type: ignore
 
-from fractal_roles.models import Method, Methods, Role, TokenPayloadRolesMixin
-from fractal_roles.services import BaseRolesService
+from fractal_roles.models import Method, Role, TokenPayloadRolesMixin
+from fractal_roles.services import RolesService as BaseRolesService
 
 
 @dataclass
@@ -21,14 +22,24 @@ def my_data(payload: TokenPayloadRoles) -> Specification:
     return my_account(payload) & EqualsSpecification("created_by", payload.sub)
 
 
-class Admin(Role):
-    get_data = Methods(get=Method(my_account), post=None, put=None, delete=None)
+@dataclass
+class Action:
+    execute: Optional[Method] = None
 
 
-class User(Role):
-    get_data = Methods(get=Method(my_data), post=None, put=None, delete=None)
+class Student(Role):
+    def __getattr__(self, item):
+        return Action()
+
+    order_pizza = Action(execute=Method(my_data))
+    pay_for_pizza = Action(execute=Method(my_data))
 
 
-class RolesService(BaseRolesService):
+class RolesService(BaseRolesService[TokenPayloadRoles]):
     def __init__(self):
-        self.roles = [Admin(), User()]
+        self.roles = [Student()]
+
+    def verify(
+        self, payload: TokenPayloadRoles, endpoint: str, method: str = "execute"
+    ) -> TokenPayloadRoles:
+        return super().verify(payload, endpoint, method)

@@ -1,7 +1,7 @@
 from dataclasses import dataclass
-from typing import Callable, Optional
+from typing import Callable, Optional, Protocol
 
-from fractal_specifications.generic.specification import (
+from fractal_specifications.generic.specification import (  # type: ignore
     EmptySpecification,
     Specification,
 )
@@ -24,7 +24,7 @@ class Methods:
     put: Optional[Method]
     delete: Optional[Method]
 
-    def __init__(self, method: Method = None, **kwargs):
+    def __init__(self, method: Optional[Method] = None, **kwargs):
         if not method:
             method = Method()
         self.get = kwargs.get("get", method)
@@ -34,11 +34,12 @@ class Methods:
 
 
 @dataclass
-class TokenPayloadRolesMixin:
-    roles: Optional[list]
+class TokenPayloadRolesMixin(Protocol):
+    roles: Optional[list] = None
     specification_func: Callable = lambda **kwargs: None
 
     @property
-    def specification(self) -> Optional[Specification]:
-        if self.specification_func:
+    def specification(self) -> Specification:
+        if self.specification_func is not None:
             return self.specification_func(self)
+        return EmptySpecification()

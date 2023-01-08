@@ -224,6 +224,9 @@ Be aware that the cost needs to be deducted from **his** wallet, not from someon
 We'll define the following Role and RolesService:
 
 ```python
+from fractal_roles.services import RolesService as BaseRolesService
+
+
 @dataclass
 class Action:
     execute: Optional[Method] = None

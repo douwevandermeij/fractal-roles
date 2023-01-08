@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-from readme.roles import RolesService, TokenPayloadRoles
+from alternative.roles import RolesService, TokenPayloadRoles
 
 
 @dataclass

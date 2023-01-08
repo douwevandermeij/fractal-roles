@@ -1,11 +1,12 @@
 from dataclasses import dataclass
+from typing import Optional
 
 import pytest
-from fractal_specifications.generic.operators import EqualsSpecification
-from fractal_specifications.generic.specification import Specification
+from fractal_specifications.generic.operators import EqualsSpecification  # type: ignore
+from fractal_specifications.generic.specification import Specification  # type: ignore
 
 from fractal_roles.models import Method, Methods, Role, TokenPayloadRolesMixin
-from fractal_roles.services import BaseRolesService
+from fractal_roles.services import RolesService as BaseRolesService
 
 
 @dataclass
@@ -39,7 +40,7 @@ def payload():
 @pytest.fixture
 def account_user_roles_service():
     class AccountMethods(Methods):
-        def __init__(self, method: Method = None, **kwargs):
+        def __init__(self, method: Optional[Method] = None, **kwargs):
             if not method:
                 method = Method(lambda payload: AccountRole.filter_account(payload))
             super().__init__(method, **kwargs)
@@ -75,7 +76,7 @@ def account_user_roles_service():
 @pytest.fixture
 def account_roles_service():
     class AccountMethods(Methods):
-        def __init__(self, method: Method = None, **kwargs):
+        def __init__(self, method: Optional[Method] = None, **kwargs):
             if not method:
                 method = Method(lambda payload: AccountRole.filter_account(payload))
             super().__init__(method, **kwargs)

@@ -54,11 +54,11 @@ repos:
         language: system
         pass_filenames: false
         always_run: true
-#  - repo: local
-#    hooks:
-#      - id: mypy
-#        name: MyPy static type checker
-#        entry: mypy --exclude 'setup\.py$' .
-#        language: system
-#        pass_filenames: false
-#        always_run: true
+  - repo: local
+    hooks:
+      - id: mypy
+        name: MyPy static type checker
+        entry: mypy --exclude 'setup\.py$' .
+        language: system
+        pass_filenames: false
+        always_run: true
