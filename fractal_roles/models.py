@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from typing import Callable, Optional, Protocol
 
-from fractal_specifications.generic.specification import (  # type: ignore
+from fractal_specifications.generic.specification import (
     EmptySpecification,
     Specification,
 )

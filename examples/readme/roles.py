@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 
-from fractal_specifications.generic.operators import EqualsSpecification  # type: ignore
-from fractal_specifications.generic.specification import Specification  # type: ignore
+from fractal_specifications.generic.operators import EqualsSpecification
+from fractal_specifications.generic.specification import Specification
 
 from fractal_roles.models import Method, Methods, Role, TokenPayloadRolesMixin
 from fractal_roles.services import RolesService as BaseRolesService
