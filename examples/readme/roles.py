@@ -22,11 +22,11 @@ def my_data(payload: TokenPayloadRoles) -> Specification:
 
 
 class Admin(Role):
-    get_data = Methods(get=Method(my_account), post=None, put=None, delete=None)
+    get_data = Methods(None, get=Method(my_account))
 
 
 class User(Role):
-    get_data = Methods(get=Method(my_data), post=None, put=None, delete=None)
+    get_data = Methods(None, get=Method(my_data))
 
 
 class RolesService(BaseRolesService):

@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Callable, Optional, Protocol
+from typing import Callable, Optional, Protocol, Union
 
 from fractal_specifications.generic.specification import (
     EmptySpecification,
@@ -12,9 +12,13 @@ class Role:
         return Methods()
 
 
+class RestrictiveRole:
+    pass
+
+
 @dataclass
 class Method:
-    specification_func: Callable = lambda payload: EmptySpecification()
+    specification_func: Union[Callable, None] = lambda payload: EmptySpecification()
 
 
 @dataclass
@@ -24,9 +28,7 @@ class Methods:
     put: Optional[Method]
     delete: Optional[Method]
 
-    def __init__(self, method: Optional[Method] = None, **kwargs):
-        if not method:
-            method = Method()
+    def __init__(self, method: Optional[Method] = Method(), **kwargs):
         self.get = kwargs.get("get", method)
         self.post = kwargs.get("post", method)
         self.put = kwargs.get("put", method)

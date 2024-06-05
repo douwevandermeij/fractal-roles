@@ -1,2 +1,2 @@
-class NotAllowedException(Exception):
-    ...
+class ForbiddenException(Exception):
+    pass

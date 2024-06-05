@@ -5,7 +5,13 @@ import pytest
 from fractal_specifications.generic.operators import EqualsSpecification
 from fractal_specifications.generic.specification import Specification
 
-from fractal_roles.models import Method, Methods, Role, TokenPayloadRolesMixin
+from fractal_roles.models import (
+    Method,
+    Methods,
+    RestrictiveRole,
+    Role,
+    TokenPayloadRolesMixin,
+)
 from fractal_roles.services import RolesService as BaseRolesService
 
 
@@ -33,21 +39,28 @@ class TokenPayloadRoles(TokenPayloadRolesMixin):
 
 
 @pytest.fixture
-def payload():
+def user_payload():
     return TokenPayloadRoles(roles=["user"], account_id=1, user_id=1)
+
+
+@pytest.fixture
+def guest_payload():
+    return TokenPayloadRoles(roles=["guest"], account_id=1, user_id=1)
 
 
 @pytest.fixture
 def account_user_roles_service():
     class AccountMethods(Methods):
-        def __init__(self, method: Optional[Method] = None, **kwargs):
-            if not method:
-                method = Method(lambda payload: AccountRole.filter_account(payload))
-            super().__init__(method, **kwargs)
+        ...
+        # def __init__(self, method: Optional[Method] = None, **kwargs):
+        #     if not method:
+        #         method = Method(lambda payload: AccountRole.filter_account(payload))
+        #     super().__init__(method, **kwargs)
 
     class AccountRole(Role):
-        def __getattr__(self, item):
-            return AccountMethods()
+        ...
+        # def __getattr__(self, item):
+        #     return AccountMethods()
 
         @staticmethod
         def filter_account(payload: TokenPayloadRoles) -> Specification:
@@ -107,8 +120,14 @@ def basic_roles_service():
     class User(Role):
         ...
 
+    class Guest(RestrictiveRole):
+        demo = Methods(
+            method=None,
+            get=Method(None),
+        )
+
     class RolesService(BaseRolesService):
         def __init__(self):
-            self.roles = [User()]
+            self.roles = [User(), Guest()]
 
     return RolesService()

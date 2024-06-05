@@ -1,6 +1,6 @@
 from typing import Generic, List, TypeVar
 
-from fractal_roles.exceptions import NotAllowedException
+from fractal_roles.exceptions import ForbiddenException
 from fractal_roles.models import Methods, Role, TokenPayloadRolesMixin
 
 TokenPayloadRolesClass = TypeVar("TokenPayloadRolesClass", bound=TokenPayloadRolesMixin)
@@ -15,7 +15,7 @@ class RolesService(Generic[TokenPayloadRolesClass]):
         for role in self.roles:
             if self._check_role(payload, endpoint, method, role):
                 return payload
-        raise NotAllowedException("No permission!")
+        raise ForbiddenException("No permission!")
 
     def _check_role(
         self, payload: TokenPayloadRolesClass, endpoint: str, method: str, role: Role
